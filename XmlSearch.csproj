@@ -35,6 +35,9 @@
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net7.0-maccatalyst|AnyCPU'">
 	  <CreatePackage>false</CreatePackage>
 	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net7.0-maccatalyst|AnyCPU'">
+	  <CreatePackage>false</CreatePackage>
+	</PropertyGroup>
 	<ItemGroup>
 		<!-- App Icon -->
 		<MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#512BD4" />
@@ -54,13 +57,21 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="7.0.0" />
+		<PackageReference Include="Google.Apis.Drive.v3" Version="1.64.0.3155" />
+		<PackageReference Include="Google.Apis.Auth" Version="1.64.0" />
+		<PackageReference Include="Google.Apis" Version="1.64.0" />
 	</ItemGroup>
 
 	<ItemGroup>
 	  <None Remove="MAUI\" />
+	  <None Remove="Resources\client_secret_web.json" />
+	  <None Remove="GDrive\" />
 	</ItemGroup>
 	<ItemGroup>
 	  <Folder Include="MAUI\" />
+	  <Folder Include="GDrive\" />
+	</ItemGroup>
+	<ItemGroup>
+	  <BundleResource Include="Resources\client_secrets_web.json" />
 	</ItemGroup>
 </Project>

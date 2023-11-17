@@ -4,38 +4,38 @@
              x:Class="XmlSearch.MainPage">
 
     <ScrollView>
-        <VerticalStackLayout
-            Spacing="25"
-            Padding="30,0"
-            VerticalOptions="Center">
+        <Grid>
+            <Grid.RowDefinitions>
+		        <RowDefinition Height="Auto" />
+		        <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+	        </Grid.RowDefinitions>
+	        <Grid.ColumnDefinitions>
+		        <ColumnDefinition Width="*" />
+		        <ColumnDefinition Width="*" />
+	        </Grid.ColumnDefinitions>
 
-            <Image
-                Source="dotnet_bot.png"
-                SemanticProperties.Description="Cute dot net bot waving hi to you!"
-                HeightRequest="200"
-                HorizontalOptions="Center" />
+            <StackLayout Orientation="Horizontal" Spacing="7" Margin="10" Grid.ColumnSpan="2">
+                <Button Text="Відкрити xml" Clicked="OpenXmlButton_Click" HorizontalOptions="FillAndExpand" VerticalOptions="Center" Grid.Row="0" Grid.Column="0"/>
+                <Button Text="Відкрити xsl" Clicked="OpenXslButton_Click" HorizontalOptions="FillAndExpand" VerticalOptions="Center" Grid.Row="0" Grid.Column="1"/>
+            </StackLayout>
 
-            <Label
-                Text="Hello, World!"
-                SemanticProperties.HeadingLevel="Level1"
-                FontSize="32"
-                HorizontalOptions="Center" />
+            <VerticalStackLayout Spacing="7" Margin="10" Grid.Row="1" Grid.ColumnSpan="2">
+                <Button Text="Трансформувати в html" Clicked="TransformToHTML_Click"/>
+                <Button Text="Очистити" Clicked="Clear_Click"/>
+                <Picker Title="Виберіть метод">
+                    <Picker.ItemsSource>
+                        <x:Array Type="{x:Type x:String}">
+                            <x:String>SAX API</x:String>
+                            <x:String>DOM API</x:String>
+                            <x:String>LINQ to XML</x:String>
+                        </x:Array> 
+                    </Picker.ItemsSource> 
+                </Picker>
+                <Entry x:Name="textInput" Placeholder="Введіть атрибут"/>
+            </VerticalStackLayout>
 
-            <Label
-                Text="Welcome to .NET Multi-platform App UI"
-                SemanticProperties.HeadingLevel="Level2"
-                SemanticProperties.Description="Welcome to dot net Multi platform App U I"
-                FontSize="18"
-                HorizontalOptions="Center" />
-
-            <Button
-                x:Name="CounterBtn"
-                Text="Click me"
-                SemanticProperties.Hint="Counts the number of times you click"
-                Clicked="OnCounterClicked"
-                HorizontalOptions="Center" />
-
-        </VerticalStackLayout>
+        </Grid>
     </ScrollView>
 
 </ContentPage>
