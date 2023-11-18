@@ -1,19 +1,17 @@
 ﻿using System;
-namespace XmlSearch.MAUI.GDrive
+namespace XmlSearch;
+public class FooNotifier
 {
-    public class FooNotifier
+    private static readonly TaskCompletionSource<Uri> _tcs = new TaskCompletionSource<Uri>();
+
+    public static void Notify(Uri uri)
     {
-        private static readonly TaskCompletionSource<Uri> _tcs = new TaskCompletionSource<Uri>();
+        _tcs.SetResult(uri);
+    }
 
-        public static void Notify(Uri uri)
-        {
-            _tcs.SetResult(uri);
-        }
-
-        public static async Task<Uri> WaitForResponse()
-        {
-            return await _tcs.Task;
-        }
+    public static async Task<Uri> WaitForResponse()
+    {
+        return await _tcs.Task;
     }
 }
 

@@ -1,23 +1,25 @@
-﻿using System.Net;
-using XmlSearch.MAUI.GDrive;
+﻿using CommunityToolkit.Maui.Storage;
+using Mopups.Interfaces;
 
 namespace XmlSearch;
 
 public partial class MainPage : ContentPage
 {
-
+    IFileSaver fileSaver;
+    IPopupNavigation popupNavigation;
     static GDriveManager driveManager;
 
+    public MainPage(IFileSaver fileSaver, IPopupNavigation popupNavigation)
+    {
+        InitializeComponent();
+        this.fileSaver = fileSaver;
+        this.popupNavigation = popupNavigation;
+    }
 
-    public MainPage()
-	{
-		InitializeComponent();
-	}
+    private void OpenXmlButton_Click(object sender, EventArgs e)
+    {
 
-	private void OpenXmlButton_Click(object sender, EventArgs e)
-	{
-		
-	}
+    }
 
     private void OpenXslButton_Click(object sender, EventArgs e)
     {
@@ -31,7 +33,6 @@ public partial class MainPage : ContentPage
 
     private async void Clear_Click(object sender, EventArgs e)
     {
-
         if (driveManager == null)
         {
             driveManager = await GDriveManager.Create();
@@ -45,7 +46,7 @@ public partial class MainPage : ContentPage
         //}
 
         var list = await driveManager.ListFilesAsync();
-        textInput.Text = list.Count != 0 ? String.Join(", ", list.ToArray()) : "empty";
+        //textInput.Text = list.Count != 0 ? String.Join(", ", list.ToArray()) : "empty";
     }
 
 

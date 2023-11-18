@@ -57,9 +57,12 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<PackageReference Include="CommunityToolkit.Maui" Version="6.1.0" />
+		<PackageReference Include="Mopups" Version="1.2.0" />
 		<PackageReference Include="Google.Apis.Drive.v3" Version="1.64.0.3155" />
 		<PackageReference Include="Google.Apis.Auth" Version="1.64.0" />
 		<PackageReference Include="Google.Apis" Version="1.64.0" />
+		<PackageReference Include="akgul.Maui.DataGrid" Version="3.0.0" />
 	</ItemGroup>
 
 	<ItemGroup>
