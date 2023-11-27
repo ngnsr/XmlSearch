@@ -1,70 +1,126 @@
-﻿using System;
-using System.Text;
-using System.Xml;
-using System.Diagnostics;
+﻿using System.Xml;
+using XmlSearch.Model;
+using XmlSearch.Utils;
 
 namespace XmlSearch.XML
 {
-    public class DomXmlAnalyser
+    public class DomXmlAnalyser : IXmlAnalyser
     {
+        private List<Sale> _sales;
+        private XmlDocument _document;
+
         public DomXmlAnalyser()
         {
-
-        }
-        static List<string> leaf = new List<string>();
-
-        public static void parsingXmlDocument()
-        {
-            XmlDocument xmlDoc = new XmlDocument();
-            xmlDoc.Load("/Users/rsnhn/Projects/XmlSearch/XmlSearch/sales.xml");
-            RecurseNodes(xmlDoc.DocumentElement);
-        }
-
-        private static void RecurseNodes(XmlNode node)
-        {
-            var sb = new StringBuilder();
-            //починаємо рекурсивний перегляд з рівня 0
-            RecurseNodes(node, 0, sb);
-            //друкуємо сформований рядок
-            Debug.WriteLine(sb.ToString());
-            Debug.WriteLine("-----------------------");
-            string leafsString = String.Join(", ", leaf);
-            Debug.WriteLine(leafsString);
-
-        }
-
-        private static void RecurseNodes(XmlNode node, int level, StringBuilder sb)
-        {
-            sb.AppendFormat("{0,-2} Type:{1,-9} Name:{2,-13} Attr: ", level, node.NodeType, node.Name);
-
-            if (node.NodeType == XmlNodeType.Text) leaf.Add(node.ParentNode.Name);
-
-            if (node.Attributes == null)
-            {
-                sb.AppendLine("Text: " + (node.HasChildNodes ? node.FirstChild.InnerXml : node.InnerXml));
-                return;
-            }
+            _sales = new List<Sale>();
+            _document = new XmlDocument();
             
-            foreach (XmlAttribute attr in node.Attributes)
-            {
-                sb.AppendFormat("{0}={1} ", attr.Name, attr.Value);
-                leaf.Add(attr.Name);
-            }
-            sb.AppendLine("Text: " + (node.HasChildNodes ? node.FirstChild.InnerXml : node.InnerXml));
-
-            foreach (XmlNode n in node.ChildNodes)
-            {
-                RecurseNodes(n, level + 1, sb);
+            try{
+                _document.LoadXml(FileManager.GetInstance().xml.Content);
+                _sales = _document.SelectSingleNode("descendant::Sales")
+                    .ChildNodes // get get all Sale nodes (XmlNodeList)
+                    .Cast<XmlNode>() // transform to IEnumerable<XmlNode>
+                    .Select(XmlNodeToSale).Where(e => e != null).ToList(); // transform to List<Sale>
+            } catch {
+                throw;
             }
         }
 
-        private static string getFilePath(string fileName)
+        public List<Sale> GetAllSales(){
+            return _sales;
+        }
+
+        public List<Sale> GetByInvoiceId(string invoiceId)
         {
-            return Path.Combine("/Users/rsnhn/Projects/XmlSearch/XmlSearch/Resources", fileName);
+            _sales.Clear();
+            _sales.Add(_sales.Where(s => s.InvoiceId == invoiceId).First());
+            return _sales;
         }
 
-        public static List<string> getLeaf() { return leaf; }
+        public List<Sale> GetByMarketBranch(string marketBranch)
+        {
+            return _sales.Where(s => s.MarketBranch == marketBranch).ToList();
+        }
 
+        public List<Sale> GetByCity(string city)
+        {
+            return _sales.Where(s => s.City == city).ToList();
+        }
+
+        public List<Sale> GetByCustomerType(string customerType)
+        {
+            return _sales.Where(s => s.CustomerType == customerType).ToList();
+        }
+
+        public List<Sale> GetBySex(string sex)
+        {
+            return _sales.Where(s => s.Sex == sex).ToList();
+        }
+
+        public List<Sale> GetByProductLine(string productLine)
+        {
+            return _sales.Where(s => s.ProductLine.Contains(productLine)).ToList();
+        }
+
+        public List<Sale> GetByProductUnitPrice(double productUnitPrice)
+        {
+            return _sales.Where(s => s.ProductUnitPrice == productUnitPrice).ToList();
+        }
+
+        public List<Sale> GetByProductQuantity(int productQuanity)
+        {
+            return _sales.Where(s => s.ProductQuantity == productQuanity).ToList();
+        }
+
+        public List<Sale> GetByProductCostWithoutTax(double productCostOfGoods)
+        {
+            return _sales.Where(s => s.ProductCostWithoutTax == productCostOfGoods).ToList();
+        }
+
+        public List<Sale> GetByProductTax(double productTax)
+        {
+            return _sales.Where(s => s.ProductTax == productTax).ToList();
+        }
+
+        public List<Sale> GetByProductTotal(double productTotal)
+        {
+            return _sales.Where(s => s.ProductTotal == productTotal).ToList();
+        }
+
+        public List<Sale> GetByDate(DateOnly date)
+        {
+            return _sales.Where(s => s.Date == date).ToList();
+        }
+
+        public List<Sale> GetByPayment(string payment)
+        {
+            return _sales.Where(s => s.Payment == payment).ToList();
+        }
+
+        public List<Sale> GetByRating(double rating)
+        {
+            return _sales.Where(s => s.Rating == rating).ToList();
+        }
+
+        private Sale XmlNodeToSale(XmlNode saleNode)
+        {
+            var invoiceId = saleNode.SelectSingleNode("descendant::InvoiceId")?.InnerText;
+            var branch = saleNode.SelectSingleNode("descendant::Branch")?.InnerText;
+            var city = saleNode.SelectSingleNode("descendant::City")?.InnerText;
+            var customerType = saleNode.SelectSingleNode("descendant::CustomerType")?.InnerText;
+            var sex = saleNode.SelectSingleNode("descendant::Sex")?.InnerText;
+            var productLine = saleNode.SelectSingleNode("descendant::ProductLine")?.InnerText;
+            var unitPrice = saleNode.SelectSingleNode("descendant::UnitPrice")?.InnerText;
+            var quantity = saleNode.SelectSingleNode("descendant::Quantity")?.InnerText;
+            var tax = saleNode.SelectSingleNode("descendant::Tax")?.InnerText;
+            var total = saleNode.SelectSingleNode("descendant::Total")?.InnerText;
+            var date = saleNode.SelectSingleNode("descendant::Date")?.InnerText;
+            var payment = saleNode.SelectSingleNode("descendant::Payment")?.InnerText;
+            var costOfGoods = saleNode.SelectSingleNode("descendant::CostOfGoods")?.InnerText;
+            var rating = saleNode.SelectSingleNode("descendant::Rating")?.InnerText;
+
+            return SaleFactory.Instance.CreateSale(invoiceId, branch, city, customerType, sex, productLine, unitPrice,
+                quantity, tax, total, date, payment, costOfGoods, rating);
+        }
     }
 }
 

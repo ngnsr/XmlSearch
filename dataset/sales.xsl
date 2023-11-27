@@ -8,14 +8,13 @@
                     <th>Branch</th>
                     <th>City</th>
                     <th>CustomerType</th>
-                    <th>Gender</th>
+                    <th>Sex</th>
                     <th>ProductLine</th>
                     <th>UnitPrice</th>
                     <th>Quantity</th>
                     <th>Tax</th>
                     <th>Total</th>
                     <th>Date</th>
-                    <th>Time</th>
                     <th>Payment</th>
                     <th>CostOfGoods</th>
                     <th>Rating</th>
@@ -40,7 +39,7 @@
             <xsl:value-of select="CustomerType"/>
         </td>
         <td>
-            <xsl:value-of select="Gender"/>
+            <xsl:value-of select="Sex"/>
         </td>
         <td>
             <xsl:value-of select="ProductLine"/>
@@ -59,9 +58,6 @@
         </td>
         <td>
             <xsl:value-of select="Date"/>
-        </td>
-        <td>
-            <xsl:value-of select="Time"/>
         </td>
         <td>
             <xsl:value-of select="Payment"/>

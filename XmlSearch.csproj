@@ -68,14 +68,16 @@
 	  <None Remove="Resources\client_secret_web.json" />
 	  <None Remove="GDrive\" />
 	  <None Remove="XML\" />
-	  <None Remove="Resources\PurchaseOrders.xml" />
+	  <None Remove="Utils\" />
+	  <None Remove="dataset\" />
 	</ItemGroup>
 	<ItemGroup>
 	  <Folder Include="GDrive\" />
 	  <Folder Include="XML\" />
+	  <Folder Include="Utils\" />
+	  <Folder Include="dataset\" />
 	</ItemGroup>
 	<ItemGroup>
 	  <BundleResource Include="Resources\client_secrets_web.json" />
-	  <BundleResource Include="Resources\PurchaseOrders.xml" />
 	</ItemGroup>
 </Project>

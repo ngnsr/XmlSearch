@@ -17,10 +17,12 @@
         <StackLayout Grid.Column="0" Orientation="Vertical" HorizontalOptions="Start"
             Margin="10,10,0,0" Spacing="5">
             <Label Text="Стратегія:" HorizontalOptions="Start" />
-            <StackLayout RadioButtonGroup.GroupName="XMLStrategy" Orientation="Horizontal">
-                <RadioButton Content="DOM" Padding="3" IsChecked="True" />
-                <RadioButton Content="SAX" Padding="3" />
-                <RadioButton Content="LINQ" Padding="3" />
+            <StackLayout RadioButtonGroup.GroupName="XMLStrategy"
+                         Orientation="Horizontal"
+                         RadioButtonGroup.SelectedValue="{Binding SelectedStrategy}">
+                <RadioButton Content="DOM" Padding="3" Value="DOM" x:Name="DomStrategy"/>
+                <RadioButton Content="SAX" Padding="3" Value="SAX" x:Name="SAXStrategy"/>
+                <RadioButton Content="LINQ" Padding="3" Value="LINQ" x:Name="LINQStrategy"/>
             </StackLayout>
             <BoxView Color="LightGrey" HeightRequest="1" HorizontalOptions="FillAndExpand"
                 Margin="0,10,0,10" />
@@ -28,25 +30,26 @@
             <Label Text="Атрибут:" HorizontalOptions="Start" />
             <Picker Title="Виберіть атрибут" ItemsSource="{Binding attr}" x:Name="attrPicker"/>
 
-            <Entry Placeholder="Введіть ключове слово" />
-            <Button Text="Пошук" HorizontalOptions="FillAndExpand" />
+            <Entry Placeholder="Введіть ключове слово" x:Name="KeywordEntry"/>
+            <Button Text="Пошук" HorizontalOptions="FillAndExpand" Clicked="SearchButton_Clicked"/>
             <BoxView Color="LightGrey" HeightRequest="1" HorizontalOptions="FillAndExpand"
                 Margin="0,10,0,10" />
 
             <Label Text="Джерело:" HorizontalOptions="Start" />
             <StackLayout x:Name="SourceStackLayout" RadioButtonGroup.GroupName="Source" Orientation="Horizontal">
-                <RadioButton Content="Локально" Padding="3" />
-                <RadioButton Content="GDrive" Padding="3" x:Name="SourceGDriveRButton"/>
+                <RadioButton Content="Локально" Padding="3" x:Name="SourceLocalRButton" />
+                <RadioButton Content="GDrive" Padding="3" x:Name="SourceGDriveRButton" />
+                
             </StackLayout>
             <BoxView Color="LightGrey" HeightRequest="1" HorizontalOptions="FillAndExpand"
                 Margin="0,10,0,10" />
 
             
             <StackLayout RadioButtonGroup.GroupName="OpenFileExtention" Orientation="Horizontal">
-                <RadioButton Content="XML" Padding="3" />
-                <RadioButton Content="XLS" Padding="3" />
+                <RadioButton Content="XML" Padding="3" x:Name="OpenXmlRButton"/>
+                <RadioButton Content="XSL" Padding="3" x:Name="OpenXslRButton"/>
             </StackLayout>
-            <Picker Title="Виберіть файл" ItemsSource="{Binding list}" x:Name="filePicker" />
+            <Picker Title="Виберіть файл" ItemsSource="{Binding gFileList}" x:Name="GUploadFilePicker" />
             <Button Clicked="OpenButton_Click" Text="Відкрити" HorizontalOptions="FillAndExpand" />
 
             <BoxView Color="LightGrey" HeightRequest="1" HorizontalOptions="FillAndExpand"
@@ -54,11 +57,11 @@
 
             <Entry Placeholder="Зберегти як" x:Name="SaveAs"/>
             <StackLayout RadioButtonGroup.GroupName="SaveFileExtention" Orientation="Horizontal">
-                <RadioButton GroupName="Format" Content="XML" Padding="3" />
-                <RadioButton GroupName="Format" Content="XLS" Padding="3" />
-                <RadioButton GroupName="Format" Content="HTML" Padding="3" />
+                <RadioButton GroupName="Format" Content="XML" Padding="3" x:Name="SaveAsXml"/>
+                <RadioButton GroupName="Format" Content="XLS" Padding="3" x:Name="SaveAsXls"/>
+                <RadioButton GroupName="Format" Content="HTML" Padding="3" x:Name="SaveAsHtml"/>
             </StackLayout>
-            <Button Text="Зберегти" HorizontalOptions="FillAndExpand" />
+            <Button Text="Зберегти" HorizontalOptions="FillAndExpand" Clicked="SaveButton_Click"/>
 
             <BoxView Color="LightGrey" HeightRequest="1" HorizontalOptions="FillAndExpand"
                 Margin="0,10,0,10" />
@@ -69,25 +72,24 @@
         <BoxView Grid.Column="1" Color="Grey" WidthRequest="1" VerticalOptions="Fill"
             Margin="10,0,10,0" />
 
-        <Grid Grid.Column="2" RowDefinitions="Auto, *">
-            <Label Text="FileName" HorizontalOptions="Start" Margin="10" />
+        <Grid Grid.Column="2" RowDefinitions="Auto, *" ColumnDefinitions="*, *">
+            <Label Grid.Column="0" Text="Xml файл не додано" HorizontalOptions="Center" Margin="10" x:Name="XmlFileName"/>
+            <Label Grid.Column="1" Text="Xsl файл не додано" HorizontalOptions="Center" Margin="10" x:Name="XslFileName"/>
 
-            <dg:DataGrid Grid.Row="1" SelectionEnabled="False"
+            <dg:DataGrid Grid.Row="1" Grid.ColumnSpan="2" SelectionEnabled="False"
                 RowHeight="70" HeaderHeight="50"
                 HeaderBackground="Yellow"
                 HorizontalOptions="Fill"
                 BorderColor="#2a2e38"
                 ItemsSource="{Binding sales}" x:Name="dataGrid"
                 IsSortable="True">
-                <!--<dg:DataGrid.NoDataView>
-                    <Label Text="XML файл не вибрано🙈" HorizontalOptions="Fill"
-                        TextColor="Wheat" />
-                </dg:DataGrid.NoDataView>-->
+                
                 <dg:DataGrid.Columns>
                     <dg:DataGridColumn Title="Id" PropertyName="InvoiceId" />
                     <dg:DataGridColumn Title="Branch" PropertyName="MarketBranch"/>
                     <dg:DataGridColumn Title="City" PropertyName="City"/>
                     <dg:DataGridColumn Title="Customer Type" PropertyName="CustomerType"/>
+                    <dg:DataGridColumn Title="Sex" PropertyName="Sex"/>
                     <dg:DataGridColumn Title="Product Line" PropertyName="ProductLine"/>
                     <dg:DataGridColumn Title="Unit Price" PropertyName="ProductUnitPrice"/>
                     <dg:DataGridColumn Title="Quantity" PropertyName="ProductQuantity"/>
